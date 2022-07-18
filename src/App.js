@@ -56,38 +56,20 @@ class App extends Component {
 
   search(e) {
 
+    // intial state to work with 
     let array1 = [...this.stateCopy.monster];
-    // let array1 = this.stateCopy.monster.slice();
     
-
+    //main functionality - filter
     let array2 = array1.filter(
       (m) => m.name.toUpperCase().includes(e.target.value.toUpperCase())
     );
     console.log(array2);
 
 
-    // // //senario1 
-    // // for (let m of this.state.monster) {
-    // //   if (m.name.toUpperCase().includes(e.target.value.toUpperCase()))
-    // //     array2.push(m);
-    // // }
-
+    //update state as per the new data array
      this.setState({ monster: array2 });
 
-    //senario2
-    // if (e.target.value === "") {
-    //   console.log("inside");
-    //   console.log(array3);
-
-  //     this.setState(
-  //       () => {
-  //         return { monster: array3 };
-  //       },
-  //       () => console.log(this.state)
-  //     );
-  //   }
-
-  //   //this.setState(()=>{return {monster:array2}});
+  
   
 }
 }

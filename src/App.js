@@ -1,157 +1,89 @@
-//import logo from './logo.svg';
 import "./App.css";
 import React, { Component } from "react";
+
+
+import CardContainer from "./Components/CardContainer/CardContainer";
+import SearchBox from "./Components/SearchBox/Search";
+
+// import "./Components/SearchBox.style.css"
+// //import "./Components/CardContainer.style.css"
+// // import "./Components/Card.style.css"
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      monster: [],
+      monsters: [],
+      searchValue: "",
     };
 
-    this.counter = {
-      num: 0,
-    };
-
-    this.search = this.search.bind(this);
-
-    this.stateCopy = Object.assign({}, this.state);
+    this.onSearchEvent = this.onSearchEvent.bind(this);
+    console.log("in constructor");
   }
 
-  componentDidMount() {
+  // sotres data from API to state
+  async componentDidMount() {
     console.log("compDidMount");
 
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((res) => res.json())
-      .then((json) => {
-        let newAr1 = json.slice();
-        console.log(json);
-        this.setState(
-          () => {
-            return { monster: newAr1 };
-          },
-          () => {
-            this.stateCopy = Object.assign({}, this.state);
-          }
-        );
-      });
+    let res = await fetch("https://jsonplaceholder.typicode.com/users");
+
+    let monsters = await res.json();
+
+    this.setState(
+      () => {
+        return { monsters };
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
   }
 
-  render() {
-    return (
-      <div>
-        <input
-          type="search"
-          placeholder="Search Name"
-          id="search-bar"
-          onChange={this.search}
-        />
+  //onChange callback for Search input
+  onSearchEvent(e) {
+    this.setState({ searchValue: e.target.value.toLowerCase() });
+  }
 
-        {this.state.monster.map((m) => {
-          return <h1 key={m.id}>{m.name}</h1>;
-        })}
+  //1. intermediate vaiable filteredMonsters have state copy
+  //2. call state if there is an change of EVENT VALUE of "input tag"
+  //3. filteredMonster is rendered
+  render() {
+    console.log("in render");
+
+    const filteredMonsters = this.state.monsters.filter((m) => {
+      return m.name.toLowerCase().includes(this.state.searchValue.toLocaleLowerCase());
+    });
+
+    return (
+      <div className="App">
+
+        <h1 className="app-title"> Monsters Rolodex</h1>
+        
+        <SearchBox
+          className='SearchBox'
+          searchValue={this.onSearchEvent}
+          placeholder="Search Monsters2"
+        ></SearchBox>
+
+        <CardContainer className="Card" monsters={filteredMonsters}> </CardContainer>
+
+       
       </div>
     );
   }
-
-  search(e) {
-
-    let array1 = [...this.stateCopy.monster];
-    // let array1 = this.stateCopy.monster.slice();
-    
-
-    let array2 = array1.filter(
-      (m) => m.name.toUpperCase().includes(e.target.value.toUpperCase())
-    );
-    console.log(array2);
-
-
-    // // //senario1 
-    // // for (let m of this.state.monster) {
-    // //   if (m.name.toUpperCase().includes(e.target.value.toUpperCase()))
-    // //     array2.push(m);
-    // // }
-
-     this.setState({ monster: array2 });
-
-    //senario2
-    // if (e.target.value === "") {
-    //   console.log("inside");
-    //   console.log(array3);
-
-  //     this.setState(
-  //       () => {
-  //         return { monster: array3 };
-  //       },
-  //       () => console.log(this.state)
-  //     );
-  //   }
-
-  //   //this.setState(()=>{return {monster:array2}});
-  
-}
 }
 
 export default App;
 
-//-----------part 1--------------------------------------------------------------------------------------------------
-
-// crate class element
-// give state with array property for map to work
-
-//use map in render to give multiple elements
-
-//--------------2nd part-------------------------------------------------------------------------------------------------
-
-//componentDidMount() -> fetch and store data with the help of API.
-// data from object to array storage
-//also make a copy of state when state updates - this copy is used to take out desired array ; Note - its value is never alterred
-
-//------------------3rd part--------------------------------------------------------------------------------
 
 
-//when a letter is typed
-//onchange should trigger
-//onchange event obj value is used to filter an state
-// 
 
 
-//input field -> onChange, filter usage , e.target.value
 
-//array fn used
-//-slice
-//-push
-//-includes
 
-//---------------------------------  Codes  ------------------------------------------------------------
 
-// ::::::::::::::::::::::::::::::::  Part 1  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-// class App extends Component {
+//  1. store from API to state
 
-//   constructor(){
-//     super();
-//     this.state ={
-//       monster : [
-//         'ravi',
-//         'Ati',
-//         'kavi'
-//       ]
-//     }
-//     console.log(this.state.monster.map((m)=>console.log(m)));
-//   }
+//render state through intermediate var
 
-//   render() {
-//     return (
-
-//       <div>
-//         <input type='search' placeholder='Search Name'id='search-bar'/>
-
-//        { this.state.monster.map((m)=>{
-//        return <h1 key>{m}</h1>
-//               })}
-
-//       </div>
-//     )
-//   }
-// }

@@ -1,0 +1,12 @@
+.CardContainer {
+  width: 85vw;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+}
+  
+  /* .CardContainer:hover {
+    transform: scale(1.05);
+  }
+   */
